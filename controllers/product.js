@@ -14,9 +14,12 @@ const saveProduct = async (req, res) => {
                 try {
                     const newProduct = new Product({
                         name: req.body.name,
+                        name_mm: req.body.name_mm,
                         image: req.file.path,
                         recipe: req.body.recipe,
+                        recipe_mm: req.body.recipe_mm,
                         ingredient: req.body.ingredient,
+                        ingredient_mm: req.body.ingredient_mm,
                         category: req.body.category
                     });
 
