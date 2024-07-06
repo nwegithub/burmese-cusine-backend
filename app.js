@@ -10,12 +10,14 @@ app.use(cors());
 
 const userRoute = require('./routes/user')
 const productRoute = require('./routes/products')
+const favoriteRoute = require('./routes/favorite')
 
 app.use('/uploads', express.static('uploads'));
 
 
 app.use("/users",userRoute)
 app.use("/products",productRoute)
+app.use("/favorites",favoriteRoute)
 
 
 
