@@ -7,9 +7,22 @@ const productSchema = new Schema({
     image: { type: String, required: true },
     recipe: { type: String, required: true },
     recipe_mm: { type: String, required: true },
-    ingredient: { type: String, required: true },
-    ingredient_mm: { type: String, required: true },
-    category: {type: String, required: true}
+    ingredients: [
+        {
+            name: { type: String, required: true },
+            amount: { type: String, required: true },
+            unit: {type: String, required: true}
+        }
+    ],
+    ingredients_mm: [
+        {
+            name: { type: String, required: true },
+            amount: { type: String, required: true },
+            unit: {type: String, required: true}
+        }
+    ],
+    category: {type: String, required: true},
+    category_mm: {type: String, required: true}
 });
 
 const Product = mongoose.model('Products', productSchema);
