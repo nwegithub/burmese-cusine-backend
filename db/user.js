@@ -7,6 +7,7 @@ const userSchema = new Schema({
     phone: {type: String,  unique:true},
     password: {type: String, required: true, unique:true},
     token: { type: String },
+    profileImage: {type: String,required: true},
     favorites: [{ type: Schema.Types.ObjectId, ref: 'Products' }] 
   
 
