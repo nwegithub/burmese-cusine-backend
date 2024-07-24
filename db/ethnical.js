@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const productSchema = new Schema({
-    name: { type: String, required: true },
-    name_mm: { type: String, required: true },
+const ethnicalProduct = new Schema({
+    name: { type: String, required: true, },
+    name_mm: { type: String, required: true, },
     image: { type: String, required: true },
     recipe: { type: String, required: true },
     recipe_mm: { type: String, required: true },
@@ -25,6 +25,6 @@ const productSchema = new Schema({
     category_mm: {type: String, required: true}
 });
 
-const Product = mongoose.model('Products', productSchema);
+const Ethnical = mongoose.model('Ethnical', ethnicalProduct);
 
-module.exports = Product;
+module.exports = Ethnical;

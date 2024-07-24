@@ -5,7 +5,7 @@ const Article = require('../db/article')
 
 
 const createArticle = async (req, res) => {
-    const { name, description, category } = req.body;
+    const { name,name_mm, description,description_mm, category } = req.body;
     const image = req.file ? req.file.path : null;
 
     if (!name || !description || !image || !category) {
@@ -14,7 +14,9 @@ const createArticle = async (req, res) => {
 
     const article = new Article({
         name,
+        name_mm,
         description,
+        description_mm,
         image,
         category
     });

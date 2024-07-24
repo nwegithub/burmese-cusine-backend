@@ -64,7 +64,6 @@ const updateProfile = async (req, res) => {
 
         // Check if a file is uploaded
         if (req.file) {
-            // Include the path of the uploaded file in the update
             req.body.profileImage = req.file.path;
         }
 
@@ -86,7 +85,23 @@ const updateProfile = async (req, res) => {
 };
 
 
+const getUserById = async (req, res) => {
+    try {
+      const userId = req.params.id; // Get user ID from the request parameters
+      const user = await DB.findById(userId).select('-password'); // Exclude password field
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch user profile' });
+    }
+  };
+
+
 
 module.exports = {
-    register, login, updateProfile
+    register, login, updateProfile,getUserById
 }
