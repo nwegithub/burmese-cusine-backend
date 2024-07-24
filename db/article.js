@@ -5,7 +5,15 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    name_mm:{
+        type: String,
+        required: true
+    },
     description: {
+        type: String,
+        required: true
+    },
+    description_mm: {
         type: String,
         required: true
     },
