@@ -88,6 +88,6 @@ const getUserById = async (req, res) => {
 
 
 module.exports = {
-    register, login, updateProfile,getUserById,getAllUsers
+    register, login,getUserById,getAllUsers
 
 }
