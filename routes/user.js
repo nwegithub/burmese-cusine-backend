@@ -9,6 +9,7 @@ router.post("/login", controller.login)
 router.post("/register", controller.register)
 router.patch('/:id/profile',upload, controller.updateProfile);
 router.get('/:id',controller.getUserById)
+router.get("/user/getAllUser",controller.getAllUsers)
 
 
 module.exports  = router;

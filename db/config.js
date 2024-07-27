@@ -7,3 +7,9 @@ mongoose.connect(`mongodb+srv://burmeseCuisineUser:burmeseCuisine2024@cluster0.v
   .catch((error) => {
     console.error('Connection error:', error);
   });
+  const { MongoClient } = require('mongodb');
+const client = new MongoClient('mongodb+srv://username:password@cluster.mongodb.net/myDatabase', {
+  // ssl: true,
+  // sslValidate: true,
+  // sslCA: '/path/to/ca.pem'
+});
