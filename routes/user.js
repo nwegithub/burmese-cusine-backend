@@ -7,7 +7,7 @@ const upload = require('../middleware/upload')
 
 router.post("/login", controller.login)
 router.post("/register", controller.register)
-router.patch('/:id/profile',upload, controller.updateProfile);
+// router.patch('/:id/profile',upload, controller.updateProfile);
 router.get('/:id',controller.getUserById)
 
 

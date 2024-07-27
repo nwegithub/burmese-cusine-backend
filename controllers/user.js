@@ -5,84 +5,58 @@ const helper = require('../utils/helper')
 
 const login = async (req, res, next) => {
     try {
+        console.log("Phone from request:", req.body.phone);
+
         let phoneUser = await DB.findOne({ phone: req.body.phone });
 
-        if (phoneUser) {
-            if (helper.comparePass(req.body.password, phoneUser.password)) {
-                let user = phoneUser.toObject();
-                user.token = helper.makeToken(user);
-                await DB.updateOne({ _id: phoneUser._id }, { token: user.token });
+        if (!phoneUser) {
+            console.log("User not found");
+            return next(new Error("Credential error"));
+        }
 
-                return helper.fMsg(res, "Login success", user);
-            } else {
-                return next(new Error("Credential error"));
-            }
+        // console.log("Stored password:", phoneUser.password);
+        // console.log("Entered password:", req.body.password);
+
+        const isPasswordValid = helper.comparePass(req.body.password, phoneUser.password);
+        console.log("Password valid:", isPasswordValid);
+
+        if (isPasswordValid) {
+            let user = phoneUser.toObject();
+            user.token = helper.makeToken(user);
+            await DB.updateOne({ _id: phoneUser._id }, { token: user.token });
+
+            return helper.fMsg(res, "Login success", user);
         } else {
             return next(new Error("Credential error"));
         }
     } catch (err) {
-        return next(err); // Handle any unexpected errors
+        return next(err);
     }
 };
+
 
 
 const register = async (req, res, next) => {
-
-    let nameUser = await DB.findOne({ name: req.body.name })
-    if (nameUser) {
-        next(new Error("Name is already in use"))
-        return
-    }
-
-    let emailUser = await DB.findOne({ name: req.body.email })
-    if (emailUser) {
-        next(new Error("Email is already in use"))
-        return
-    }
-
-    let phoneUser = await DB.findOne({ name: req.body.phone })
-    if (phoneUser) {
-        next(new Error("phone is already in use"))
-        return
-    }
-
-    req.body.password = helper.encode(req.body.password)
-    let result = await new DB(req.body).save();
-
-    helper.fMsg(res, "register success", result)
-
-}
-
-
-const updateProfile = async (req, res) => {
     try {
-        const userId = await DB.findById(req.params.id);
-
-        if (!userId) {
-            return res.status(404).json({ message: 'User not found' });
+        let phoneUser = await DB.findOne({ phone: req.body.phone });
+        if (phoneUser) {
+            throw new Error("Phone number is already in use");
         }
 
-        // Check if a file is uploaded
-        if (req.file) {
-            req.body.profileImage = req.file.path;
+        let emailUser = await DB.findOne({ email: req.body.email });
+        if (emailUser) {
+            throw new Error("Email is already in use");
         }
 
-        console.log('req.params:', req.params);
-        console.log('req.body:', req.body);
+        req.body.password = helper.encode(req.body.password);
+        let result = await new DB(req.body).save();
 
-        // Update the user profile
-        const updatedUser = await DB.findByIdAndUpdate(
-            userId._id,
-            req.body,
-            { new: true, runValidators: true }
-        );
-
-        res.status(200).json({ message: 'Profile image updated successfully', user: updatedUser });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        helper.fMsg(res, "Register success", result);
+    } catch (err) {
+        next(err);
     }
 };
+
 
 
 const getUserById = async (req, res) => {
@@ -103,5 +77,5 @@ const getUserById = async (req, res) => {
 
 
 module.exports = {
-    register, login, updateProfile,getUserById
+    register, login,getUserById
 }
