@@ -66,18 +66,15 @@ const removeFavoriteProduct = async (req, res) => {
       // If user not found, respond with an error
       return res.status(404).json({ message: 'User not found' });
     }
+    const result = await Favorite.findOneAndDelete({ userId: userId, productId: productId });
 
-    // Step 2: Remove the corresponding document from the Favorite collection
-    await Favorite.findOneAndDelete({ user: userId, product: productId });
-
-    // Check if removal was successful
-    const favorite = await Favorite.findOne({ user: userId, product: productId });
-    if (!favorite) {
+    if (result) {
       return res.status(200).json({ message: 'Favorite removed successfully' });
+    } else {
+      // If result is null, no matching favorite was found to delete
+      return res.status(404).json({ message: 'Favorite not found' });
     }
 
-    // If favorite was not removed from the collection, respond with an error
-    res.status(500).json({ message: 'Failed to remove favorite from the collection' });
   } catch (error) {
     console.error('Error removing favorite:', error);
     res.status(500).json({ message: 'Server error' });
@@ -106,8 +103,8 @@ const removeFavoriteProduct = async (req, res) => {
 
   const getAllFavorites = async (req, res) => {
     try {
-      const favorites = await Favorite.find(); // Find all favorite documents
-      res.status(200).json(favorites); // Send the list of favorites as JSON
+      const favorites = await Favorite.find().populate('productId'); // Populate product information
+      res.status(200).json(favorites); // Send the list of favorites with product details as JSON
     } catch (error) {
       res.status(500).json({ message: 'Server Error', error: error.message });
     }
