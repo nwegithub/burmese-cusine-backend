@@ -10,6 +10,8 @@ router.post("/register", controller.register)
 // router.patch('/:id/profile',upload, controller.updateProfile);
 router.get('/:id',controller.getUserById)
 router.get("/user/getAllUser",controller.getAllUsers)
+// Delete a user by ID route
+router.delete('/user/:id', controller.deleteUser);
 
 
 module.exports  = router;

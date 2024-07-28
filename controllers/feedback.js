@@ -35,8 +35,20 @@ const getUserFeedback = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+const deleteFeedback = async (req, res) => {
+  try {
+    const feedback = await Feedback.findById(req.params.id);
+    if (!feedback) {
+        return res.status(404).json({ message: 'Feedback not found' });
+    }
 
+    await Feedback.deleteOne({ _id: req.params.id });
+    res.status(200).json({ message: 'Feedback deleted successfully' });
+} catch (error) {
+    res.status(500).json({ message: error.message });
+}
+};
 
 module.exports = {
-    createFeedback,getUserFeedback
+    createFeedback,getUserFeedback,deleteFeedback
 }
