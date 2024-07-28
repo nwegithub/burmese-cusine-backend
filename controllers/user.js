@@ -34,8 +34,6 @@ const login = async (req, res, next) => {
     }
 };
 
-
-
 const register = async (req, res, next) => {
     try {
         let phoneUser = await DB.findOne({ phone: req.body.phone });
@@ -87,7 +85,26 @@ const getUserById = async (req, res) => {
   };
 
 
+
+  
+// Delete a user by ID
+ const deleteUser = async (req, res) => {
+  try {
+      const userId = req.params.id;
+      const user = await DB.findByIdAndDelete(userId);
+      
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
 module.exports = {
-    register, login,getUserById,getAllUsers
+
+    register, login,getUserById,getAllUsers,deleteUser
 
 }

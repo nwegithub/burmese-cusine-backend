@@ -65,6 +65,21 @@ const saveProduct = async (req, res) => {
     });
 };
 
+const deleteEthnicalProduct = async (req, res) => {
+    try {
+        const ethnicalProduct = await DB.findById(req.params.id);
+        if (!ethnicalProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        await DB.deleteOne({ _id: req.params.id });
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 
 const allProduct = async(req,res,next) => {
     let product = await DB.find();
@@ -72,5 +87,5 @@ const allProduct = async(req,res,next) => {
 }
 
 module.exports = {
-    saveProduct,allProduct
+    saveProduct,allProduct,deleteEthnicalProduct
 };
