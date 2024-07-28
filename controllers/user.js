@@ -104,6 +104,7 @@ const getUserById = async (req, res) => {
 };
 
 module.exports = {
+
     register, login,getUserById,getAllUsers,deleteUser
 
 }
