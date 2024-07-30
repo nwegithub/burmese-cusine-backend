@@ -89,6 +89,19 @@ const deleteProduct = async (req, res) => {
     }
 };
 
+const updateProductById = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const updatedProduct = await DB.findByIdAndUpdate(id, req.body, { new: true });
+      if (!updatedProduct) {
+          return res.status(404).json({ message: 'Product not found' });
+      }
+      res.status(200).json(updatedProduct);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
-    saveProduct,allProduct,deleteProduct
+    saveProduct,allProduct,deleteProduct,updateProductById
 };
