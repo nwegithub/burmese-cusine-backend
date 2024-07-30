@@ -7,4 +7,6 @@ router.post('/createFeedback', controller.createFeedback);
 
 router.get('/allFeedback', controller.getUserFeedback);
 
+router.delete('/:id',controller.deleteFeedback);
+
 module.exports = router;

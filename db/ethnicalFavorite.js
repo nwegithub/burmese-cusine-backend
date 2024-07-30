@@ -10,4 +10,5 @@ const EthnicalfavoriteSchema = new Schema({
 
 const EthnicalFavorite = mongoose.model('EthnicalFavorite', EthnicalfavoriteSchema);
 
+
 module.exports = EthnicalFavorite

@@ -9,4 +9,5 @@ router.get('/getEthnicalFavorites/:userId', controller.getUserEthnicalFavorites)
 
 
 
+
 module.exports = router

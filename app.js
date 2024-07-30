@@ -14,7 +14,8 @@ const favoriteRoute = require('./routes/favorite')
 const ethnicalFavoriteRoute = require('./routes/ethnicalFavorite')
 const articleRoute = require('./routes/article');
 const feedbackRoute = require('./routes/feedback')
-const ethnicalRoute = require('./routes/ethnical')
+const ethnicalRoute = require('./routes/ethnical');
+const ethnicalFavoriteRoute = require('./routes/ethnicalFavorite');
 
 app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +28,7 @@ app.use("/ethnicalFavorites",ethnicalFavoriteRoute)
 app.use("/articles",articleRoute)
 app.use("/feedback",feedbackRoute)
 app.use("/ethnical",ethnicalRoute)
+app.use("/ethnicalFavorite",ethnicalFavoriteRoute)
 
 
 

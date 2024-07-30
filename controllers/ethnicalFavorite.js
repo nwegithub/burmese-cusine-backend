@@ -85,6 +85,7 @@ const addFavoriteProduct = async (req, res) => {
       }
   
       res.status(200).json({ favorites: user.ethnicalFavorites });
+
     } catch (error) {
       console.error('Error retrieving favorites:', error);
       res.status(500).json({ message: 'Server error' });
@@ -95,6 +96,7 @@ const addFavoriteProduct = async (req, res) => {
   const getAllFavorites = async (req, res) => {
     try {
       const favorites = await Favorite.find().populate('productId'); // Populate product information
+
       res.status(200).json(favorites); // Send the list of favorites with product details as JSON
     } catch (error) {
       res.status(500).json({ message: 'Server Error', error: error.message });
@@ -105,4 +107,5 @@ const addFavoriteProduct = async (req, res) => {
 
   module.exports ={
     addFavoriteProduct,removeFavoriteProduct,getUserEthnicalFavorites,getAllFavorites
+
   }

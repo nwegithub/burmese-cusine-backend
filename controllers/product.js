@@ -75,7 +75,20 @@ const allProduct = async(req,res,next) => {
     let product = await DB.find();
     helper.fMsg(res,"All product",product)
 }
+const deleteProduct = async (req, res) => {
+    try {
+        const product = await DB.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        await DB.deleteOne({ _id: req.params.id });
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 module.exports = {
-    saveProduct,allProduct
+    saveProduct,allProduct,deleteProduct
 };
