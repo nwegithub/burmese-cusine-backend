@@ -28,7 +28,6 @@ const saveProduct = async (req, res) => {
                     if (!ingredients.every(isValidIngredient) || !ingredients_mm.every(isValidIngredient)) {
                         return res.status(400).json({ message: 'Invalid ingredient format' });
                     }
-
                     const newProduct = new Product({
                         name: req.body.name,
                         name_mm: req.body.name_mm,
