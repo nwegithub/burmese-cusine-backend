@@ -7,100 +7,96 @@ const mongoose = require('mongoose');
 mongoose.set('strictPopulate', false);
 
 
-const addFavoriteEthnical = async (req, res) => {
-  try {
-    const { userId, ethnicalId } = req.body;
+const addFavoriteProduct = async (req, res) => {
+    try {
+        const { userId, productId } = req.body;
 
-    // Check if the product exists
-    const ethnical = await Ethnical.findById(ethnicalId);
-    if (!ethnical) {
-      return res.status(404).json({ message: 'Ethnial not found' });
+        const product = await Ethnical.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Ethnical product not found' });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const alreadyFavorited = await EthnicalFavorite.findOne({ userId, productId });
+        if (alreadyFavorited) {
+            return res.status(400).json({ message: 'Ethnical product already favorited' });
+        }
+
+        user.ethnicalFavorites.push(productId);
+        await user.save();
+
+        const newEthnicalFavorite = new EthnicalFavorite({ userId, productId });
+        await newEthnicalFavorite.save();
+
+        return res.status(200).json({ message: 'Favorite added successfully' });
+    } catch (error) {
+        console.error('Error adding favorite:', error);
+        res.status(500).json({ message: 'Server error' });
     }
-
-    // Check if the user exists
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Check if the product is already favorited
-    const alreadyFavorited = await EthnicalFavorite.findOne({ userId, ethnicalId });
-    if (alreadyFavorited) {
-      return res.status(400).json({ message: 'Ethnical already favorited' });
-    }
-
-    // Add to user's favorites list
-    user.favorites.push(ethnicalId);
-    await user.save();
-
-    // Save to the Favorite collection
-    const favorite = new EthnicalFavorite({ userId, ethnicalId });
-    await favorite.save();
-
-    return res.status(200).json({ message: 'Favorite added successfully' });
-  } catch (error) {
-    console.error('Error adding favorite:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-const removeFavoriteEthnical = async (req, res) => {
-  try {
-    const { userId, ethnicalId } = req.body;
-
-    if (!userId || !ethnicalId) {
-      return res.status(400).json({ message: 'User ID and Ethnical ID are required' });
-    }
-
-    // Step 1: Remove the product from the user's favorites array
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { $pull: { favorites: ethnicalId } },
-      { new: true }
-    );
-
-    if (!user) {
-      // If user not found, respond with an error
-      return res.status(404).json({ message: 'User not found' });
-    }
-    const result = await EthnicalFavorite.findOneAndDelete({ userId: userId, ethnicalId: ethnicalId });
-
-    if (result) {
-      return res.status(200).json({ message: 'Favorite removed successfully' });
-    } else {
-      // If result is null, no matching favorite was found to delete
-      return res.status(404).json({ message: 'Favorite not found' });
-    }
-
-  } catch (error) {
-    console.error('Error removing favorite:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
 };
 
 
-  const getUserFavorites = async (req, res) => {
+  const removeFavoriteProduct = async (req, res) => {
+    try {
+      const { userId, productId } = req.body;
+  
+      if (!userId || !productId) {
+        return res.status(400).json({ message: 'User ID and Product ID are required' });
+      }
+  
+      // Remove the product from the user's ethnicalFavorites array
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { ethnicalFavorites: productId } },
+        { new: true }
+      );
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Remove from the EthnicalFavorite collection
+      const result = await EthnicalFavorite.findOneAndDelete({ userId, productId });
+  
+      if (result) {
+        return res.status(200).json({ message: 'Favorite removed successfully' });
+      } else {
+        return res.status(404).json({ message: 'Favorite not found' });
+      }
+  
+    } catch (error) {
+      console.error('Error removing favorite:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+  
+
+  const getUserEthnicalFavorites = async (req, res) => {
     try {
       const { userId } = req.params;
   
-      // If using embedded array
-      const user = await User.findById(userId).populate('favorites');
-      if (user) {
-        return res.status(200).json({ favorites: user.favorites });
+      const user = await User.findById(userId).populate('ethnicalFavorites');
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
       }
   
-      // Or if using a separate favorites collection
-      const favorites = await EthnicalFavorite.find({ user: userId }).populate('Ethnical');
-      res.status(200).json({ favorites: favorites.map(fav => fav.ethnicalId) });
+      res.status(200).json({ favorites: user.ethnicalFavorites });
+
     } catch (error) {
       console.error('Error retrieving favorites:', error);
       res.status(500).json({ message: 'Server error' });
     }
   };
+  
 
   const getAllFavorites = async (req, res) => {
     try {
-      const favorites = await EthnicalFavorite.find().populate('ethnicalId'); // Populate product information
+      const favorites = await Favorite.find().populate('productId'); // Populate product information
+
       res.status(200).json(favorites); // Send the list of favorites with product details as JSON
     } catch (error) {
       res.status(500).json({ message: 'Server Error', error: error.message });
@@ -110,5 +106,6 @@ const removeFavoriteEthnical = async (req, res) => {
 
 
   module.exports ={
-    addFavoriteEthnical,removeFavoriteEthnical,getUserFavorites,getAllFavorites
+    addFavoriteProduct,removeFavoriteProduct,getUserEthnicalFavorites,getAllFavorites
+
   }

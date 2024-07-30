@@ -7,7 +7,8 @@ const userSchema = new Schema({
     phone: { type: String, unique: true },
     password: { type: String, required: true },
     token: { type: String },
-    favorites: [{ type: Schema.Types.ObjectId, ref: 'Products' }]
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'Products' }],
+    ethnicalFavorites: [{ type: Schema.Types.ObjectId, ref: 'Ethnical' }]
 });
 
 const User = mongoose.model("User", userSchema);

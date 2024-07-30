@@ -2,12 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Define the Favorite schema
-const favoriteSchema = new Schema({
+const EthnicalfavoriteSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'user' },
-  ethnicalId: { type: Schema.Types.ObjectId, ref: 'ethnical' },
+  productId: { type: Schema.Types.ObjectId, ref: 'Ethnical' },
   createdAt: { type: Date, default: Date.now }
 });
 
-const EthnicalFavorite = mongoose.model('EthnicalFavorite', favoriteSchema);
+const EthnicalFavorite = mongoose.model('EthnicalFavorite', EthnicalfavoriteSchema);
+
 
 module.exports = EthnicalFavorite
