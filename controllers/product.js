@@ -102,6 +102,18 @@ const updateProductById = async (req, res) => {
   }
 };
 
+const getProductById = async (req, res) => {
+  try {
+      const seasonalProduct = await DB.findById(req.params.id);
+      if (!seasonalProduct) {
+          return res.status(404).json({ message: 'Ethnical product not found' });
+      }
+      res.status(200).json(seasonalProduct);
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+  }
+};
+
 module.exports = {
-    saveProduct,allProduct,deleteProduct,updateProductById
+    saveProduct,allProduct,deleteProduct,updateProductById,getProductById
 };

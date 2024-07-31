@@ -79,6 +79,19 @@ const deleteEthnicalProduct = async (req, res) => {
 };
 
 
+const getEthnicalProductById = async (req, res) => {
+    try {
+        const ethnicalProduct = await DB.findById(req.params.id);
+        if (!ethnicalProduct) {
+            return res.status(404).json({ message: 'Ethnical product not found' });
+        }
+        res.status(200).json(ethnicalProduct);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+
 
 const allProduct = async(req,res,next) => {
     let product = await DB.find();
@@ -86,5 +99,5 @@ const allProduct = async(req,res,next) => {
 }
 
 module.exports = {
-    saveProduct,allProduct,deleteEthnicalProduct
+    saveProduct,allProduct,deleteEthnicalProduct,getEthnicalProductById
 };
