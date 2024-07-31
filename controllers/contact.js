@@ -1,6 +1,6 @@
 const Contact = require('../db/contact')
 
-exports.createContact = async (req, res) => {
+const createContact = async (req, res) => {
   try {
     const { name, email, text } = req.body;
     const contact = new Contact({ name, email, text });
@@ -10,3 +10,16 @@ exports.createContact = async (req, res) => {
     res.status(500).json({ message: 'Error submitting contact request', error });
   }
 };
+
+const getAllContacts = async (req, res) => {
+    try {
+      const contacts = await Contact.find();
+      res.status(200).json(contacts);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+
+module.exports = {
+    createContact,getAllContacts
+}
