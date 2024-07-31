@@ -23,6 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/users",userRoute)
 app.use("/products",productRoute)
 app.use("/favorites",favoriteRoute)
+
+
+
 app.use("/ethnicalFavorites",ethnicalFavoriteRoute)
 app.use("/articles",articleRoute)
 app.use("/feedback",feedbackRoute)
