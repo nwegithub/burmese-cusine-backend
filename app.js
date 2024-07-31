@@ -21,6 +21,7 @@ app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: true }));
 
 
+
 app.use("/users",userRoute)
 app.use("/products",productRoute)
 app.use("/favorites",favoriteRoute)
