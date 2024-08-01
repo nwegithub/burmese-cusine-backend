@@ -49,6 +49,16 @@ const deleteFeedback = async (req, res) => {
 }
 };
 
+
+const getAllFeedback = async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find().sort({ createdAt: -1 }).populate('user');
+    res.status(200).json(feedbacks);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching feedback', error });
+  }
+};
+
 module.exports = {
-    createFeedback,getUserFeedback,deleteFeedback
+    createFeedback,getUserFeedback,deleteFeedback,getAllFeedback
 }
