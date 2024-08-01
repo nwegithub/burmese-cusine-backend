@@ -9,4 +9,6 @@ router.get('/allFeedback', controller.getUserFeedback);
 
 router.delete('/:id',controller.deleteFeedback);
 
+router.get('/',controller.getAllFeedback)
+
 module.exports = router;
