@@ -15,3 +15,4 @@ const client = new MongoClient('mongodb+srv://username:password@cluster.mongodb.
   // sslValidate: true,
   // sslCA: '/path/to/ca.pem'
 });
+
