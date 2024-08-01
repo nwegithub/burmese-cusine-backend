@@ -92,16 +92,17 @@ const addFavoriteProduct = async (req, res) => {
     }
   };
   
-
   const getAllFavorites = async (req, res) => {
     try {
-      const favorites = await Favorite.find().populate('productId'); // Populate product information
-
-      res.status(200).json(favorites); // Send the list of favorites with product details as JSON
+      const productIds = await EthnicalFavorite.distinct('productId'); // Get distinct productIds
+      const favorites = await EthnicalFavorite.find({ productId: { $in: productIds } }).populate('productId');
+  
+      res.status(200).json(favorites);
     } catch (error) {
       res.status(500).json({ message: 'Server Error', error: error.message });
     }
   };
+  
 
 
 
