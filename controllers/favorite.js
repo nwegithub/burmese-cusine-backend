@@ -103,12 +103,16 @@ const removeFavoriteProduct = async (req, res) => {
 
   const getAllFavorites = async (req, res) => {
     try {
-      const favorites = await Favorite.find().populate('productId'); // Populate product information
-      res.status(200).json(favorites); // Send the list of favorites with product details as JSON
+      const favorites = await Favorite.find().populate('productId');
+      const uniqueFavorites = Array.from(new Set(favorites.map(fav => fav.productId._id.toString())))
+                                   .map(id => favorites.find(fav => fav.productId._id.toString() === id));
+  
+      res.status(200).json(uniqueFavorites);
     } catch (error) {
       res.status(500).json({ message: 'Server Error', error: error.message });
     }
   };
+  
 
 
 
