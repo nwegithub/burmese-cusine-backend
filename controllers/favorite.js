@@ -104,16 +104,18 @@ const removeFavoriteProduct = async (req, res) => {
   const getAllFavorites = async (req, res) => {
     try {
       const favorites = await Favorite.find().populate('productId');
-      const uniqueFavorites = Array.from(new Set(favorites.map(fav => fav.productId._id.toString())))
-                                   .map(id => favorites.find(fav => fav.productId._id.toString() === id));
+  
+      const uniqueFavorites = Array.from(
+        new Set(favorites.map(fav => fav.productId._id.toString()))
+      ).map(id => favorites.find(fav => fav.productId._id.toString() === id));
+  
+      uniqueFavorites.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   
       res.status(200).json(uniqueFavorites);
     } catch (error) {
       res.status(500).json({ message: 'Server Error', error: error.message });
     }
   };
-  
-
 
 
   module.exports ={
