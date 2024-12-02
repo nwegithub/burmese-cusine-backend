@@ -23,7 +23,9 @@ const createFeedback = async (req, res) => {
 
 const getUserFeedback = async (req, res) => {
   try {
-    const feedbacks = await Feedback.find().populate('user', 'name email profileImage');
+    const feedbacks = await Feedback.find()
+      .populate('user', 'name email profileImage') 
+      .sort({ createdAt: -1 }); 
 
     if (!feedbacks || feedbacks.length === 0) {
       return res.status(404).json({ message: 'No feedback found' });

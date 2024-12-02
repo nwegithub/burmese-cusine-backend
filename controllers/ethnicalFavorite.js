@@ -95,7 +95,9 @@ const addFavoriteProduct = async (req, res) => {
   const getAllFavorites = async (req, res) => {
     try {
       const productIds = await EthnicalFavorite.distinct('productId'); // Get distinct productIds
-      const favorites = await EthnicalFavorite.find({ productId: { $in: productIds } }).populate('productId');
+      const favorites = await EthnicalFavorite.find({ productId: { $in: productIds } }).populate('productId')
+      .populate('productId') 
+      .sort({ createdAt: -1 }); 
   
       res.status(200).json(favorites);
     } catch (error) {
@@ -103,9 +105,6 @@ const addFavoriteProduct = async (req, res) => {
     }
   };
   
-
-
-
   module.exports ={
     addFavoriteProduct,removeFavoriteProduct,getUserEthnicalFavorites,getAllFavorites
 
